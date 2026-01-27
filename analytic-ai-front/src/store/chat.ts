@@ -16,6 +16,7 @@ type ChatStore = {
   setChats: (chats: ChatType[]) => void;
   setActiveChat: (chatId: string) => void;
   updateChat: (chat: ChatType) => void;
+  createChat: () => void; 
 };
 
 export const useChatStore = create<ChatStore>()(
@@ -42,6 +43,29 @@ export const useChatStore = create<ChatStore>()(
           return {
             chats: sortByLastMessage(updated)
           };
+        }),
+
+      createChat: () =>
+        set((state) => {
+          const newChatId = `chat_${Date.now()}`;
+
+          const newChat: ChatType = {
+            chatId: newChatId,
+            title: "Новый чат",
+            messages: [
+              {
+                id: 1,
+                author: "bot",
+                text: "Привет! Я помогу составить техническую документацию. Пришли код или описание — и я сделаю документ.",
+                time: new Date().toISOString()
+              }
+            ]
+          };
+
+          return {
+            chats: sortByLastMessage([newChat, ...state.chats]),
+            activeChatId: newChatId
+          };
         })
     }),
     {
@@ -49,3 +73,4 @@ export const useChatStore = create<ChatStore>()(
     }
   )
 );
+
