@@ -10,19 +10,22 @@ export const ChatInput = ({
   sendMessage: () => void;
 }) => {
   return (
-    <div className="flex gap-3 items-center p-3 border-t border-[#2b2f3b]">
+    <form
+      className="flex gap-3 items-center p-3 border-t border-[#2b2f3b]"
+      onSubmit={(e) => {
+        e.preventDefault();
+        sendMessage();
+      }}
+    >
       <input
         className="flex-1 bg-[#0b0f1b] border border-[#2b2f3b] rounded-2xl p-4 outline-none text-white placeholder:text-[#7b7b8c]"
         placeholder="Напишите сообщение..."
         value={input}
         onChange={(e) => setInput(e.target.value)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter") sendMessage();
-        }}
       />
-      <Button onClick={sendMessage}>
-          Отправить
+      <Button type="submit">
+        Отправить
       </Button>
-    </div>
+    </form>
   );
 };

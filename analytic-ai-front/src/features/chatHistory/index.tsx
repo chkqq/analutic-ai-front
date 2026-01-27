@@ -7,7 +7,7 @@ export const ChatHistory = () => {
     <div className="mt-auto">
       <div className="font-bold mb-2">История запросов</div>
 
-      <div className="chat-history-scroll bg-[#0b0f1b] rounded-xl p-3 border border-[#2b2f3b] max-h-[360px] overflow-y-auto">
+      <div className="scroll-bar bg-[#0b0f1b] rounded-xl p-3 border border-[#2b2f3b] max-h-[360px] overflow-y-auto">
 
         {chats.map((chat) => {
           const lastMessage = chat.messages.at(-1);

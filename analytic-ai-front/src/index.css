@@ -8,26 +8,26 @@
     padding: 0;
 }
 
-.chat-history-scroll {
+.scroll-bar {
   scrollbar-width: thin;
   scrollbar-color: #7c4dff #0b0f1b;
 }
 
-.chat-history-scroll::-webkit-scrollbar {
+.scroll-bar::-webkit-scrollbar {
   width: 10px;
 }
 
-.chat-history-scroll::-webkit-scrollbar-track {
+.scroll-bar::-webkit-scrollbar-track {
   background: #0b0f1b;
   border-radius: 999px;
 }
 
-.chat-history-scroll::-webkit-scrollbar-thumb {
+.scroll-bar::-webkit-scrollbar-thumb {
   border-radius: 999px;
   border: 2px solid #0b0f1b;
   background: linear-gradient(180deg, #3a3fff 0%, #7c4dff 100%);
 }
 
-.chat-history-scroll::-webkit-scrollbar-thumb:hover {
+.scroll-bar::-webkit-scrollbar-thumb:hover {
   background: linear-gradient(180deg, #2a2fff 0%, #9c6cff 100%);
 }
