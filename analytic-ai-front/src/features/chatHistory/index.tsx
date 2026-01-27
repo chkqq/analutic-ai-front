@@ -1,25 +1,22 @@
-import type { ChatType } from "../../types/chat";
+import { useChatStore } from "../../store/chat";
 
-type Props = {
-  chats: ChatType[];
-  activeChatId: string;
-  onSelectChat: (chatId: string) => void;
-};
+export const ChatHistory = () => {
+  const { chats, activeChatId, setActiveChat } = useChatStore();
 
-export const ChatHistory = ({ chats, activeChatId, onSelectChat }: Props) => {
   return (
     <div className="mt-auto">
       <div className="font-bold mb-2">История запросов</div>
 
-      <div className="bg-[#0b0f1b] rounded-xl p-3 border border-[#2b2f3b]">
+      <div className="chat-history-scroll bg-[#0b0f1b] rounded-xl p-3 border border-[#2b2f3b] max-h-[360px] overflow-y-auto">
+
         {chats.map((chat) => {
           const lastMessage = chat.messages.at(-1);
 
           return (
             <div
               key={chat.chatId}
-              onClick={() => onSelectChat(chat.chatId)}
-              className={`cursor-pointer flex justify-between text-sm mt-2 p-2 rounded-xl ${
+              onClick={() => setActiveChat(chat.chatId)}
+              className={`cursor-pointer flex justify-between text-sm mt-1 p-2 rounded-xl transition-colors ${
                 activeChatId === chat.chatId
                   ? "bg-[#1f2330]"
                   : "hover:bg-[#161a24]"
@@ -34,7 +31,9 @@ export const ChatHistory = ({ chats, activeChatId, onSelectChat }: Props) => {
                   : "—"}
               </span>
 
-              <span>{chat.title}</span>
+              <span className="truncate max-w-[180px]">
+                {chat.title}
+              </span>
             </div>
           );
         })}

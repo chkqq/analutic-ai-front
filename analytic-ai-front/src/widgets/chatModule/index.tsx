@@ -2,20 +2,19 @@ import { useState } from "react";
 import { ChatHeader } from "../../features/chatHeader";
 import { ChatOverview } from "../../features/chatOverview";
 import { ChatInput } from "../../features/chatInput";
-import type { ChatType } from "../../types/chat";
+import { useChatStore } from "../../store/chat";
 
-type Props = {
-  chat: ChatType | null;
-  onUpdateChat: (chat: ChatType) => void;
-};
-
-export const ChatModule = ({ chat, onUpdateChat }: Props) => {
+export const ChatModule = () => {
   const [input, setInput] = useState("");
+
+  const { chats, activeChatId, updateChat } = useChatStore();
+
+  const chat = chats.find((c) => c.chatId === activeChatId) ?? null;
 
   const sendMessage = () => {
     if (!input.trim() || !chat) return;
 
-    const updatedChat: ChatType = {
+    updateChat({
       ...chat,
       messages: [
         ...chat.messages,
@@ -26,14 +25,17 @@ export const ChatModule = ({ chat, onUpdateChat }: Props) => {
           time: new Date().toISOString()
         }
       ]
-    };
+    });
 
-    onUpdateChat(updatedChat);
     setInput("");
   };
 
   if (!chat) {
-    return <main className="flex-1 flex items-center justify-center">Выберите чат</main>;
+    return (
+      <main className="flex-1 flex items-center justify-center">
+        Выберите чат
+      </main>
+    );
   }
 
   return (
@@ -42,7 +44,11 @@ export const ChatModule = ({ chat, onUpdateChat }: Props) => {
         <div className="bg-[#0b0f1b] rounded-3xl border border-[#2b2f3b] overflow-hidden">
           <ChatHeader title={chat.title} />
           <ChatOverview messages={chat.messages} />
-          <ChatInput input={input} setInput={setInput} sendMessage={sendMessage} />
+          <ChatInput
+            input={input}
+            setInput={setInput}
+            sendMessage={sendMessage}
+          />
         </div>
       </div>
     </main>

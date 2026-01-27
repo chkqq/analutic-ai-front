@@ -12,7 +12,7 @@ export const ChatOverview = ({ messages }: { messages: Message[] }) => {
         {messages.map((m) => (
           <div
             key={m.id}
-            className={`mb-3 p-4 rounded-2xl max-w-[80%] w-fit break-words relative ${
+            className={`mb-3 p-4 rounded-2xl max-w-[80%] min-w-[5%]  w-fit break-words relative ${
               m.author === "user"
                 ? "ml-auto bg-gradient-to-br from-[#3a3fff] to-[#7c4dff] text-white"
                 : "bg-[#111827] border border-[#2b2f3b] text-[#d4d4e1]"

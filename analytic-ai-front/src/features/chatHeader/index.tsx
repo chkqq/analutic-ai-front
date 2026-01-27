@@ -10,7 +10,10 @@ export const ChatHeader = ({ title }: { title: string }) => {
           <div className="text-[#b7b7c8] text-sm">AI ассистент для аналитиков</div>
         </div>
       </div>
-      <div className="text-sm text-[#b7b7c8]">Online</div>
+      <div className="flex items-center gap-2 text-sm text-[#b7b7c8]">
+        <span className="w-2.5 h-2.5 rounded-full bg-[#2ecc71] shadow-[0_0_12px_rgba(46,204,113,0.65)]" />
+        <span>Online</span>
+      </div>
     </div>
   );
 };

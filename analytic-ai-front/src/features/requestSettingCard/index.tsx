@@ -22,12 +22,12 @@ const RequestSettingCard = ({ item }: RequestSettingCardProps) => {
 
       {item.type === "input" ? (
         <input
-          className="w-full bg-transparent pt-1 outline-none text-white placeholder:text-[#6b6f7d]"
+          className="w-full bg-transparent pt-1  cursor-text outline-none text-white placeholder:text-[#6b6f7d]"
           placeholder={item.placeholder}
         />
       ) : (
         <select
-          className="w-full bg-[#0b0f1b] pt-1 text-white outline-none"
+          className="w-full bg-[#0b0f1b] pt-1  cursor-pointer text-white outline-none"
           defaultValue={item.value}
         >
           {item.options?.map((opt) => (
