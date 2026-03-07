@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { ChatType } from "../types/chat";
+import { useQuestionnaireStore } from "./questionnnaire";
 
 const sortByLastMessage = (chats: ChatType[]) =>
   [...chats].sort((a, b) => {
@@ -16,7 +17,7 @@ type ChatStore = {
   setChats: (chats: ChatType[]) => void;
   setActiveChat: (chatId: string) => void;
   updateChat: (chat: ChatType) => void;
-  createChat: () => void; 
+  createChat: () => void;
 };
 
 export const useChatStore = create<ChatStore>()(
@@ -49,6 +50,9 @@ export const useChatStore = create<ChatStore>()(
         set((state) => {
           const newChatId = `chat_${Date.now()}`;
 
+          // Сброс опроса при создании нового чата
+          useQuestionnaireStore.getState().reset();
+
           const newChat: ChatType = {
             chatId: newChatId,
             title: "Новый чат",
@@ -56,7 +60,7 @@ export const useChatStore = create<ChatStore>()(
               {
                 id: 1,
                 author: "bot",
-                text: "Привет! Я помогу составить техническую документацию. Пришли код или описание — и я сделаю документ.",
+                text: "✅ Вы ответили на все вопросы. Теперь мы можем начать анализ и подобрать подходящие инструменты. Опишите вашу задачу или отправьте данные для анализа.",
                 time: new Date().toISOString()
               }
             ]
@@ -73,4 +77,3 @@ export const useChatStore = create<ChatStore>()(
     }
   )
 );
-

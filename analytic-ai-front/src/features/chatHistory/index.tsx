@@ -4,7 +4,7 @@ export const ChatHistory = () => {
   const { chats, activeChatId, setActiveChat } = useChatStore();
 
   return (
-    <div className="mt-auto">
+    <div>
       <div className="font-bold mb-2">История запросов</div>
 
       <div className="scroll-bar bg-[#0b0f1b] rounded-xl p-3 border border-[#2b2f3b] max-h-[360px] overflow-y-auto">
