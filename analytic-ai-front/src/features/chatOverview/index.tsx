@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react"
 import type { MessageType } from "../../types/chat"
 import { MessageFeedback } from "../../ui/messageFeedback"
 
-export const ChatOverview = ({ messages }: { messages: MessageType[] }) => {
+export const ChatOverview = ({ messages, isLoading }: { messages: MessageType[]; isLoading?: boolean }) => {
   const scrollRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
@@ -15,6 +15,15 @@ export const ChatOverview = ({ messages }: { messages: MessageType[] }) => {
   return (
     <div className="p-5 h-[640px] flex flex-col gap-4">
       <div ref={scrollRef} className="flex-1 overflow-y-auto pr-2">
+
+        {isLoading && (
+          <div className="flex items-center gap-2 text-[#7b7b8c] text-sm mb-3">
+            <div className="w-2 h-2 rounded-full bg-[#3a3fff] animate-bounce" style={{ animationDelay: '0ms' }} />
+            <div className="w-2 h-2 rounded-full bg-[#3a3fff] animate-bounce" style={{ animationDelay: '150ms' }} />
+            <div className="w-2 h-2 rounded-full bg-[#3a3fff] animate-bounce" style={{ animationDelay: '300ms' }} />
+            <span className="ml-1">Подбираем рекомендации...</span>
+          </div>
+        )}
 
         {messages.map((m) => (
           <div

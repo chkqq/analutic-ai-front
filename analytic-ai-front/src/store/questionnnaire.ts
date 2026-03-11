@@ -1,11 +1,12 @@
-import { create } from "zustand"
+import { create } from 'zustand'
+import { QUESTIONS } from '../entities/questions'
 
 type QuestionnaireState = {
   currentQuestion: number
-  answers: Record<number, string>
+  answers: Record<string, number | number[]>
   finished: boolean
 
-  answerQuestion: (id: number, answer: string) => void
+  answerQuestion: (field: string, value: number | number[]) => void
   reset: () => void
 }
 
@@ -14,17 +15,13 @@ export const useQuestionnaireStore = create<QuestionnaireState>((set) => ({
   answers: {},
   finished: false,
 
-  answerQuestion: (id, answer) =>
+  answerQuestion: (field, value) =>
     set((state) => {
       const next = state.currentQuestion + 1
-
       return {
-        answers: {
-          ...state.answers,
-          [id]: answer
-        },
+        answers: { ...state.answers, [field]: value },
         currentQuestion: next,
-        finished: next >= 7
+        finished: next >= QUESTIONS.length
       }
     }),
 

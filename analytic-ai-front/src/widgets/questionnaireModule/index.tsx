@@ -25,9 +25,8 @@ export const QuestionnaireModule = () => {
         <QuestionMessage
           question={question.question}
           options={question.options}
-          onSelect={(answer) => {
-            answerQuestion(question.id, answer)
-          }}
+          multi={question.multi}
+          onSelect={(value) => answerQuestion(question.field, value)}
         />
       </div>
 
