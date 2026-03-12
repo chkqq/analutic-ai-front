@@ -19,6 +19,7 @@ type ChatStore = {
   updateChat: (chat: ChatType) => void;
   createChat: () => void;
   answerQuestion: (field: string, value: number | number[]) => void;
+  clearChats: () => void;
 };
 
 export const useChatStore = create<ChatStore>()(
@@ -74,6 +75,9 @@ export const useChatStore = create<ChatStore>()(
             activeChatId: newChatId
           };
         }),
+
+      clearChats: () =>
+        set({ chats: [], activeChatId: null }),
 
       answerQuestion: (field, value) =>
         set((state) => {

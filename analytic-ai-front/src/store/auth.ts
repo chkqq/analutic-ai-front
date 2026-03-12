@@ -1,5 +1,6 @@
 import { create } from 'zustand'
 import { authService } from '../services/authService'
+import { useChatStore } from './chat'
 
 type AuthState = {
   userId: number | null
@@ -22,6 +23,8 @@ export const useAuthStore = create<AuthState>((set) => ({
 
   login: async (username, password) => {
     const data = await authService.login(username, password)
+
+    useChatStore.getState().clearChats()
 
     set({
       userId: data.userId,
@@ -55,11 +58,13 @@ export const useAuthStore = create<AuthState>((set) => ({
     }
   },
 
-  logout: () =>
+  logout: () => {
+    useChatStore.getState().clearChats()
     set({
       userId: null,
       userName: null,
       accessToken: null
     })
+  }
 
 }))

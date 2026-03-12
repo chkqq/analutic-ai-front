@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+	  <PackageReference Include="AutoMapper" Version="16.0.0" />
+	  <PackageReference Include="MediatR" Version="14.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\Domain\Domain.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="CQRs\Admin\Queries\" />
+	  <Folder Include="CQRs\Admin\Dtos\" />
+	  <Folder Include="CQRs\Feedback\Queries\" />
+	  <Folder Include="CQRs\Feedback\Dtos\" />
+	</ItemGroup>
+
+</Project>
