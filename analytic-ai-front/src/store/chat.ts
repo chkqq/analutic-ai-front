@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import type { ChatType } from "../types/chat";
-import { useQuestionnaireStore } from "./questionnnaire";
+import type { ChatType, QuestionnaireData } from "../types/chat";
+import { QUESTIONS } from "../entities/questions";
 
 const sortByLastMessage = (chats: ChatType[]) =>
   [...chats].sort((a, b) => {
@@ -18,6 +18,7 @@ type ChatStore = {
   setActiveChat: (chatId: string) => void;
   updateChat: (chat: ChatType) => void;
   createChat: () => void;
+  answerQuestion: (field: string, value: number | number[]) => void;
 };
 
 export const useChatStore = create<ChatStore>()(
@@ -50,9 +51,6 @@ export const useChatStore = create<ChatStore>()(
         set((state) => {
           const newChatId = `chat_${Date.now()}`;
 
-          // Сброс опроса при создании нового чата
-          useQuestionnaireStore.getState().reset();
-
           const newChat: ChatType = {
             chatId: newChatId,
             title: "Новый чат",
@@ -63,12 +61,39 @@ export const useChatStore = create<ChatStore>()(
                 text: "✅ Вы ответили на все вопросы. Теперь мы можем начать анализ и подобрать подходящие инструменты. Опишите вашу задачу или отправьте данные для анализа.",
                 time: new Date().toISOString()
               }
-            ]
+            ],
+            questionnaire: {
+              currentQuestion: 0,
+              answers: {},
+              finished: false
+            }
           };
 
           return {
             chats: sortByLastMessage([newChat, ...state.chats]),
             activeChatId: newChatId
+          };
+        }),
+
+      answerQuestion: (field, value) =>
+        set((state) => {
+          const activeChat = state.chats.find(c => c.chatId === state.activeChatId);
+          if (!activeChat) return state;
+
+          const current = activeChat.questionnaire ?? { currentQuestion: 0, answers: {}, finished: false };
+          const next = current.currentQuestion + 1;
+          const newQuestionnaire: QuestionnaireData = {
+            currentQuestion: next,
+            answers: { ...current.answers, [field]: value },
+            finished: next >= QUESTIONS.length
+          };
+
+          return {
+            chats: state.chats.map(c =>
+              c.chatId === state.activeChatId
+                ? { ...c, questionnaire: newQuestionnaire }
+                : c
+            )
           };
         })
     }),

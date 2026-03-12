@@ -3,7 +3,6 @@ import { ChatHeader } from '../../features/chatHeader'
 import { ChatOverview } from '../../features/chatOverview'
 import { ChatInput } from '../../features/chatInput'
 import { useChatStore } from '../../store/chat'
-import { useQuestionnaireStore } from '../../store/questionnnaire'
 import { useAuthStore } from '../../store/auth'
 import { QuestionnaireModule } from '../questionnaireModule'
 
@@ -20,10 +19,11 @@ export const ChatModule = () => {
   const sentRef = useRef(false)
 
   const { chats, activeChatId, updateChat } = useChatStore()
-  const { finished, answers } = useQuestionnaireStore()
   const { userId } = useAuthStore()
 
   const chat = chats.find((c) => c.chatId === activeChatId) ?? null
+  const questionnaire = chat?.questionnaire ?? { currentQuestion: 0, answers: {}, finished: true }
+  const { finished, answers } = questionnaire
 
   const sendMessage = () => {
     if (!input.trim() || !chat) return
@@ -44,8 +44,19 @@ export const ChatModule = () => {
     setInput('')
   }
 
+  // При смене активного чата сбрасываем флаг отправки
+  useEffect(() => {
+    sentRef.current = false
+  }, [activeChatId])
+
   useEffect(() => {
     if (!finished || !chat || !userId || sentRef.current) return
+
+    // Если в чате уже есть ответы бота (кроме первого приветственного), рекомендации уже были отправлены
+    if (chat.messages.length > 1) {
+      sentRef.current = true
+      return
+    }
 
     sentRef.current = true
     setIsLoading(true)
